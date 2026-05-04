@@ -81,6 +81,12 @@ function Users() {
                       <button
                         className="btn btn-danger"
                         onClick={() => handleDelete(user.id)}
+                        disabled={user.email === "admin@spsgroup.com.br"}
+                        title={
+                          user.email === "admin@spsgroup.com.br"
+                            ? "Nao e possivel excluir o admin"
+                            : ""
+                        }
                       >
                         Excluir
                       </button>
