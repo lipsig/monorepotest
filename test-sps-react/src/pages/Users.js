@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import UserService from "../services/UserService";
-import AuthService from "../services/AuthService";
+import AppLayout from "../components/AppLayout";
 
 const userService = new UserService();
 
@@ -9,7 +9,6 @@ function Users() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
 
   useEffect(() => {
     let active = true;
@@ -38,64 +37,62 @@ function Users() {
     }
   }
 
-  function handleLogout() {
-    AuthService.signOut();
-    navigate("/login");
-  }
-
   return (
-    <div style={{ maxWidth: 720, margin: "40px auto", fontFamily: "sans-serif" }}>
-      <header
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <h1>Usuarios</h1>
-        <div>
-          <Link to="/users/new" style={{ marginRight: 12 }}>
-            <button>Novo usuario</button>
+    <AppLayout>
+      <div className="page-card">
+        <div className="page-toolbar">
+          <h2>Usuarios</h2>
+          <Link to="/users/new">
+            <button className="btn btn-primary">Novo usuario</button>
           </Link>
-          <button onClick={handleLogout}>Sair</button>
         </div>
-      </header>
-      {loading && <p>Carregando...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {!loading && !error && (
-        <table style={{ width: "100%", borderCollapse: "collapse" }}>
-          <thead>
-            <tr>
-              <th style={{ textAlign: "left", borderBottom: "1px solid #ccc", padding: 8 }}>
-                Nome
-              </th>
-              <th style={{ textAlign: "left", borderBottom: "1px solid #ccc", padding: 8 }}>
-                Email
-              </th>
-              <th style={{ textAlign: "left", borderBottom: "1px solid #ccc", padding: 8 }}>
-                Tipo
-              </th>
-              <th style={{ borderBottom: "1px solid #ccc", padding: 8 }}></th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td style={{ padding: 8 }}>{user.name}</td>
-                <td style={{ padding: 8 }}>{user.email}</td>
-                <td style={{ padding: 8 }}>{user.type}</td>
-                <td style={{ padding: 8, textAlign: "right" }}>
-                  <Link to={`/users/${user.id}`} style={{ marginRight: 8 }}>
-                    <button>Editar</button>
-                  </Link>
-                  <button onClick={() => handleDelete(user.id)}>Excluir</button>
-                </td>
+        {loading && <p className="empty-state">Carregando...</p>}
+        {error && <div className="form-error">{error}</div>}
+        {!loading && !error && users.length === 0 && (
+          <p className="empty-state">Nenhum usuario cadastrado.</p>
+        )}
+        {!loading && !error && users.length > 0 && (
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Tipo</th>
+                <th className="actions">Acoes</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user.id}>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>
+                    <span
+                      className={`badge ${user.type === "admin" ? "badge-admin" : ""}`}
+                    >
+                      {user.type}
+                    </span>
+                  </td>
+                  <td className="actions">
+                    <div className="actions-row">
+                      <Link to={`/users/${user.id}`}>
+                        <button className="btn btn-secondary">Editar</button>
+                      </Link>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => handleDelete(user.id)}
+                      >
+                        Excluir
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </AppLayout>
   );
 }
 

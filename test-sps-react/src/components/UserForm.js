@@ -34,53 +34,58 @@ function UserForm({ initial, submitLabel, onSubmit, requirePassword = true }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div style={{ marginBottom: 12 }}>
-        <label style={{ display: "block" }}>Nome</label>
+      <div className="form-group">
+        <label htmlFor="name">Nome</label>
         <input
+          id="name"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
-          style={{ width: "100%", padding: 6 }}
         />
       </div>
-      <div style={{ marginBottom: 12 }}>
-        <label style={{ display: "block" }}>Email</label>
+      <div className="form-group">
+        <label htmlFor="email">Email</label>
         <input
+          id="email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          style={{ width: "100%", padding: 6 }}
         />
       </div>
-      <div style={{ marginBottom: 12 }}>
-        <label style={{ display: "block" }}>Tipo</label>
+      <div className="form-group">
+        <label htmlFor="type">Tipo</label>
         <select
+          id="type"
           value={type}
           onChange={(e) => setType(e.target.value)}
-          style={{ width: "100%", padding: 6 }}
         >
           <option value="user">user</option>
           <option value="admin">admin</option>
         </select>
       </div>
-      <div style={{ marginBottom: 12 }}>
-        <label style={{ display: "block" }}>
-          Senha {!requirePassword && "(deixe em branco para manter)"}
+      <div className="form-group">
+        <label htmlFor="password">
+          Senha
+          {!requirePassword && (
+            <span className="form-hint">(deixe em branco para manter)</span>
+          )}
         </label>
         <input
+          id="password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required={requirePassword}
-          style={{ width: "100%", padding: 6 }}
         />
       </div>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <button type="submit" disabled={submitting} style={{ padding: "8px 16px" }}>
-        {submitting ? "Salvando..." : submitLabel}
-      </button>
+      {error && <div className="form-error">{error}</div>}
+      <div className="form-actions">
+        <button type="submit" className="btn btn-primary" disabled={submitting}>
+          {submitting ? "Salvando..." : submitLabel}
+        </button>
+      </div>
     </form>
   );
 }

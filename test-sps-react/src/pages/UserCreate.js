@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import UserService from "../services/UserService";
 import UserForm from "../components/UserForm";
+import AppLayout from "../components/AppLayout";
 
 const userService = new UserService();
 
@@ -14,11 +15,16 @@ function UserCreate() {
   }
 
   return (
-    <div style={{ maxWidth: 480, margin: "40px auto", fontFamily: "sans-serif" }}>
-      <Link to="/users">&larr; Voltar</Link>
-      <h1>Novo usuario</h1>
-      <UserForm submitLabel="Criar" onSubmit={handleSubmit} requirePassword />
-    </div>
+    <AppLayout>
+      <div className="page-card">
+        <Link to="/users" className="back-link">
+          &larr; Voltar
+        </Link>
+        <h2>Novo usuario</h2>
+        <p className="subtitle">Preencha os dados abaixo para cadastrar.</p>
+        <UserForm submitLabel="Criar" onSubmit={handleSubmit} requirePassword />
+      </div>
+    </AppLayout>
   );
 }
 

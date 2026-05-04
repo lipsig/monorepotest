@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import UserService from "../services/UserService";
 import UserForm from "../components/UserForm";
+import AppLayout from "../components/AppLayout";
 
 const userService = new UserService();
 
@@ -35,20 +36,24 @@ function UserEdit() {
   }
 
   return (
-    <div style={{ maxWidth: 480, margin: "40px auto", fontFamily: "sans-serif" }}>
-      <Link to="/users">&larr; Voltar</Link>
-      <h1>Editar usuario</h1>
-      {loading && <p>Carregando...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {user && (
-        <UserForm
-          initial={user}
-          submitLabel="Salvar"
-          onSubmit={handleSubmit}
-          requirePassword={false}
-        />
-      )}
-    </div>
+    <AppLayout>
+      <div className="page-card">
+        <Link to="/users" className="back-link">
+          &larr; Voltar
+        </Link>
+        <h2>Editar usuario</h2>
+        {loading && <p className="empty-state">Carregando...</p>}
+        {error && <div className="form-error">{error}</div>}
+        {user && (
+          <UserForm
+            initial={user}
+            submitLabel="Salvar"
+            onSubmit={handleSubmit}
+            requirePassword={false}
+          />
+        )}
+      </div>
+    </AppLayout>
   );
 }
 
