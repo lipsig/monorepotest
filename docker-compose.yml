@@ -6,6 +6,7 @@ services:
       - "3333:3333"
     environment:
       - PORT=3333
+      - JWT_SECRET=dev-secret-change-me
     volumes:
       - ./test-sps-server:/app
       - /app/node_modules
