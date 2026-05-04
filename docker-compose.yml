@@ -10,3 +10,22 @@ services:
       - ./test-sps-server:/app
       - /app/node_modules
     command: yarn dev
+
+  client:
+    build: ./test-sps-react
+    container_name: sps-client
+    ports:
+      - "3334:3334"
+    environment:
+      - PORT=3334
+      - HOST=0.0.0.0
+      - BROWSER=none
+      - WATCHPACK_POLLING=true
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_SERVER_URL=http://localhost:3333
+    volumes:
+      - ./test-sps-react:/app
+      - /app/node_modules
+    command: yarn start
+    depends_on:
+      - server
