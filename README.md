@@ -9,6 +9,8 @@ Resolução do teste técnico para a vaga de Desenvolvedor. CRUD de usuários co
 
 Pré-requisito: Docker (ou Docker Desktop) com Docker Compose v2. Não precisa de Node instalado na máquina.
 
+A partir da **raiz do repositório** (onde fica o `docker-compose.yml`):
+
 ```bash
 docker compose up --build
 ```
@@ -18,7 +20,7 @@ docker compose up --build
 
 O `/` do front redireciona automaticamente pra `/login`.
 
-Pra parar:
+Pra parar (também na raiz):
 
 ```bash
 docker compose down
