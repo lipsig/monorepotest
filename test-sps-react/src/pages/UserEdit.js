@@ -1,33 +1,55 @@
-import React from "react";
-import { useLoaderData } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import UserService from "../services/UserService";
+import UserForm from "../components/UserForm";
 
-export function userLoader({ params }) {
-  const user = {
-    id: params.userId,
-    name: "teste",
-    email: "teste@gmail.com",
-  };
+const userService = new UserService();
 
-  return { user };
-}
+function UserEdit() {
+  const { userId } = useParams();
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-function EditUser() {
-  const { user } = useLoaderData();
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const data = await userService.get(userId);
+        if (active) setUser(data);
+      } catch (err) {
+        if (active) setError("Falha ao carregar usuario");
+      } finally {
+        if (active) setLoading(false);
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, [userId]);
+
+  async function handleSubmit(payload) {
+    await userService.update(userId, payload);
+    navigate("/users");
+  }
 
   return (
-    <div>
-      <p>Edição de Usuário</p>
-      <div>
-        <form>
-          <label>Nome:</label>
-          <input type="text" value={user.name} />
-          <br />
-          <br />
-          <button type="submit">Salvar</button>
-        </form>
-      </div>
+    <div style={{ maxWidth: 480, margin: "40px auto", fontFamily: "sans-serif" }}>
+      <Link to="/users">&larr; Voltar</Link>
+      <h1>Editar usuario</h1>
+      {loading && <p>Carregando...</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {user && (
+        <UserForm
+          initial={user}
+          submitLabel="Salvar"
+          onSubmit={handleSubmit}
+          requirePassword={false}
+        />
+      )}
     </div>
   );
 }
 
-export default EditUser;
+export default UserEdit;

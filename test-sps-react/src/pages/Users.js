@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UserService from "../services/UserService";
 import AuthService from "../services/AuthService";
 
@@ -53,7 +53,12 @@ function Users() {
         }}
       >
         <h1>Usuarios</h1>
-        <button onClick={handleLogout}>Sair</button>
+        <div>
+          <Link to="/users/new" style={{ marginRight: 12 }}>
+            <button>Novo usuario</button>
+          </Link>
+          <button onClick={handleLogout}>Sair</button>
+        </div>
       </header>
       {loading && <p>Carregando...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
@@ -80,6 +85,9 @@ function Users() {
                 <td style={{ padding: 8 }}>{user.email}</td>
                 <td style={{ padding: 8 }}>{user.type}</td>
                 <td style={{ padding: 8, textAlign: "right" }}>
+                  <Link to={`/users/${user.id}`} style={{ marginRight: 8 }}>
+                    <button>Editar</button>
+                  </Link>
                   <button onClick={() => handleDelete(user.id)}>Excluir</button>
                 </td>
               </tr>

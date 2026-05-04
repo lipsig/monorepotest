@@ -6,16 +6,19 @@ class UserService {
     return data;
   }
   async get(id) {
-    throw new Error("Not implemented");
+    const { data } = await api.get(`/users/${id}`);
+    return data;
   }
-  async create(data) {
-    throw new Error("Not implemented");
+  async create(payload) {
+    const { data } = await api.post("/users", payload);
+    return data;
   }
   async delete(id) {
     await api.delete(`/users/${id}`);
   }
-  async update(id, data) {
-    throw new Error("Not implemented");
+  async update(id, payload) {
+    const { data } = await api.put(`/users/${id}`, payload);
+    return data;
   }
 }
 
